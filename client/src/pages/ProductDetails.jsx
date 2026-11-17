@@ -38,12 +38,23 @@ const ProductDetails = () => {
     }).format(price);
   };
 
-  const whatsappMessage = product
-    ? encodeURIComponent(
-        `Hello Ghunghat Sultana, I am interested in the "${product.name}" (Price: ${formatPrice(product.sellingPrice)}). Could you please provide more details? Link: ${window.location.href}`,
-      )
-    : "";
-  const whatsappUrl = `https://wa.me/${settings.whatsappNumber.replace(/\D/g, "")}?text=${whatsappMessage}`;
+  // NEW: Handle Tracking and WhatsApp Redirect
+  const handleWhatsAppEnquiry = () => {
+    // 1. Fire and forget the tracking API call
+    api
+      .post("/enquiries", {
+        productId: product._id,
+        productName: product.name,
+      })
+      .catch((err) => console.error("Tracking failed:", err));
+
+    // 2. Open WhatsApp immediately
+    const message = encodeURIComponent(
+      `Hello Ghunghat Sultana, I am interested in the "${product.name}" (Price: ${formatPrice(product.sellingPrice)}). Link: ${window.location.href}`,
+    );
+    const cleanNumber = settings.whatsappNumber.replace(/\D/g, "");
+    window.open(`https://wa.me/${cleanNumber}?text=${message}`, "_blank");
+  };
 
   if (loading)
     return (
@@ -148,14 +159,14 @@ const ProductDetails = () => {
             </p>
 
             <div className="flex flex-col space-y-4">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* UPDATED BUTTON */}
+              <button
+                onClick={handleWhatsAppEnquiry}
                 className="w-full flex items-center justify-center bg-burgundy text-ivory py-4 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors"
               >
                 <MessageCircle size={18} className="mr-3" /> Enquire on WhatsApp
-              </a>
+              </button>
+
               <div className="flex space-x-4">
                 <button className="flex-1 flex items-center justify-center py-4 border border-charcoal/20 text-charcoal text-sm tracking-widest uppercase hover:border-burgundy hover:text-burgundy transition-colors">
                   <Heart size={16} className="mr-2" /> Add to Wishlist

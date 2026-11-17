@@ -1,38 +1,66 @@
-import {
-  ShoppingBag,
-  Eye,
-  FileText,
-  MessageCircle,
-  TrendingUp,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { ShoppingBag, Eye, MessageCircle, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import api from "../../services/api";
 
 const AdminDashboard = () => {
-  const stats = [
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    published: 0,
+    enquiries: 0,
+    recentEnquiries: [],
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem("adminToken");
+        const headers = { Authorization: `Bearer ${token}` };
+
+        // Fetch Products and Enquiries in parallel
+        const [productsRes, enquiriesRes] = await Promise.all([
+          api.get("/products/admin/all", { headers }),
+          api.get("/enquiries", { headers }),
+        ]);
+
+        const products = productsRes.data.data;
+        const enquiries = enquiriesRes.data.data;
+
+        setStats({
+          totalProducts: products.length,
+          published: products.filter((p) => p.isPublished).length,
+          enquiries: enquiries.length,
+          recentEnquiries: enquiries.slice(0, 3), // Get 3 most recent
+        });
+      } catch (error) {
+        console.error("Dashboard fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const statCards = [
     {
       title: "Total Products",
-      value: "24",
+      value: stats.totalProducts,
       icon: ShoppingBag,
       color: "text-blue-600",
       bg: "bg-blue-100",
     },
     {
       title: "Published",
-      value: "18",
+      value: stats.published,
       icon: Eye,
       color: "text-green-600",
       bg: "bg-green-100",
     },
     {
-      title: "Drafts",
-      value: "6",
-      icon: FileText,
-      color: "text-orange-600",
-      bg: "bg-orange-100",
-    },
-    {
       title: "WhatsApp Enquiries",
-      value: "142",
+      value: stats.enquiries,
       icon: MessageCircle,
       color: "text-purple-600",
       bg: "bg-purple-100",
@@ -41,7 +69,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
       <div>
         <h1 className="text-3xl font-serif text-charcoal">
           Dashboard Overview
@@ -51,9 +78,8 @@ const AdminDashboard = () => {
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => {
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div
@@ -66,7 +92,7 @@ const AdminDashboard = () => {
                     {stat.title}
                   </p>
                   <h2 className="text-3xl font-bold text-charcoal">
-                    {stat.value}
+                    {loading ? "..." : stat.value}
                   </h2>
                 </div>
                 <div className={`p-3 rounded-full ${stat.bg} ${stat.color}`}>
@@ -78,9 +104,7 @@ const AdminDashboard = () => {
         })}
       </div>
 
-      {/* Recent Activity / Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Quick Actions */}
         <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-xl">
           <h2 className="text-lg font-semibold text-charcoal mb-4">
             Quick Actions
@@ -101,39 +125,36 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Enquiries Placeholder */}
         <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-xl">
           <h2 className="text-lg font-semibold text-charcoal mb-4 flex items-center">
-            <TrendingUp size={18} className="mr-2 text-gold" /> Recent Activity
+            <TrendingUp size={18} className="mr-2 text-gold" /> Recent Enquiries
           </h2>
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <div>
-                <p className="text-sm font-medium text-charcoal">
-                  WhatsApp Enquiry
-                </p>
-                <p className="text-xs text-gray-500">The Zara Emerald Suit</p>
-              </div>
-              <span className="text-xs text-gray-400">2 mins ago</span>
-            </div>
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <div>
-                <p className="text-sm font-medium text-charcoal">
-                  New Draft Created
-                </p>
-                <p className="text-xs text-gray-500">Midnight Velvet Lehenga</p>
-              </div>
-              <span className="text-xs text-gray-400">1 hr ago</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-charcoal">
-                  WhatsApp Enquiry
-                </p>
-                <p className="text-xs text-gray-500">Rose Gold Tissue Saree</p>
-              </div>
-              <span className="text-xs text-gray-400">3 hrs ago</span>
-            </div>
+            {loading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : stats.recentEnquiries.length > 0 ? (
+              stats.recentEnquiries.map((enq) => (
+                <div
+                  key={enq._id}
+                  className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-charcoal">
+                      WhatsApp Enquiry
+                    </p>
+                    <p className="text-xs text-gray-500">{enq.productName}</p>
+                  </div>
+                  <span className="text-xs text-gray-400">
+                    {new Date(enq.createdAt).toLocaleDateString("en-IN", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500">No enquiries yet.</p>
+            )}
           </div>
         </div>
       </div>

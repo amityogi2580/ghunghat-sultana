@@ -9,6 +9,7 @@ import uploadRoutes from './routes/uploadRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import settingRoutes from './routes/settingRoutes.js';
 import collectionRoutes from './routes/collectionRoutes.js';
+import enquiryRoutes from './routes/enquiryRoutes.js'; // <-- NEW
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/collections', collectionRoutes);
+app.use('/api/enquiries', enquiryRoutes); // <-- NEW
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Ghunghat Sultana API' });

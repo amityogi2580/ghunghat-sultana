@@ -16,13 +16,8 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      // Make the real API call to the backend
       const response = await api.post("/auth/login", { email, password });
-
-      // Save the token in the browser's local storage
       localStorage.setItem("adminToken", response.data.token);
-
-      // Redirect to the dashboard
       navigate("/admin/dashboard");
     } catch (err) {
       setError(
@@ -42,7 +37,7 @@ const AdminLogin = () => {
           </div>
           <h1 className="text-3xl font-serif text-burgundy">Admin Access</h1>
           <p className="text-sm text-charcoal/60 mt-2">
-            Sign in to manage Ghunghat Sultana
+            Sign in to manage Ghunghat Fashion
           </p>
         </div>
 

@@ -12,7 +12,6 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real scenario, this would send an email or save to the database
     setTimeout(() => setSubmitted(true), 1000);
   };
 
@@ -20,7 +19,6 @@ const Contact = () => {
     <div className="bg-ivory min-h-screen py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,7 +55,7 @@ const Contact = () => {
                     Email Us
                   </h3>
                   <p className="text-charcoal/60 text-sm">
-                    hello@ghunghatsultana.com
+                    hello@ghunghatfashion.com
                   </p>
                 </div>
               </div>
@@ -78,7 +76,6 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

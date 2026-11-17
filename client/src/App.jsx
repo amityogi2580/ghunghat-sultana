@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-// Public Layouts & Pages
+// Public
 import PublicLayout from "./layouts/PublicLayout";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -9,7 +9,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
-// Admin Layouts & Pages
+// Admin
 import AdminLayout from "./layouts/AdminLayout";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -19,26 +19,23 @@ import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminCollections from "./pages/admin/AdminCollections";
+import AdminHomepage from "./pages/admin/AdminHomepage"; // <-- NEW
 import AdminSettings from "./pages/admin/AdminSettings";
 
 function App() {
   return (
     <Routes>
-      {/* Public Routes */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />{" "}
-        {/* Catch-all route for 404 */}
+        <Route path="*" element={<NotFound />} />
       </Route>
 
-      {/* Admin Login (Standalone page) */}
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* Protected Admin Routes */}
       <Route element={<PrivateRoute />}>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
@@ -48,6 +45,7 @@ function App() {
           <Route path="products/edit/:id" element={<EditProduct />} />
           <Route path="categories" element={<AdminCategories />} />
           <Route path="collections" element={<AdminCollections />} />
+          <Route path="homepage" element={<AdminHomepage />} /> {/* <-- NEW */}
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Route>

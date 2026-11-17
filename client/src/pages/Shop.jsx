@@ -1,30 +1,59 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronDown, Loader } from "lucide-react";
+import { ChevronDown, Loader, Search } from "lucide-react";
 import api from "../services/api";
 
 const Shop = () => {
-  const [sortOption, setSortOption] = useState("featured");
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  // Fetch products from the backend when the page loads
+  // Filter States
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortOption, setSortOption] = useState("featured");
+
+  // Fetch Categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await api.get("/categories");
+        setCategories(["All", ...res.data.data.map((c) => c.name)]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Fetch Products whenever filters change
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const response = await api.get("/products");
+        // Build the URL with query parameters
+        let url = `/products?`;
+        if (searchTerm) url += `search=${searchTerm}&`;
+        if (selectedCategory !== "All") url += `category=${selectedCategory}&`;
+        if (sortOption !== "featured") url += `sort=${sortOption}&`;
+
+        const response = await api.get(url);
         setProducts(response.data.data);
       } catch (err) {
-        setError("Failed to load products. Please try again later.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
-  }, []);
+    // Debounce search slightly so it doesn't fire on every single keystroke
+    const delayDebounceFn = setTimeout(() => {
+      fetchProducts();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, selectedCategory, sortOption]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("en-IN", {
@@ -36,7 +65,6 @@ const Shop = () => {
 
   return (
     <div className="bg-ivory min-h-screen">
-      {/* Editorial Header */}
       <div className="bg-beige py-20 px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -53,13 +81,35 @@ const Shop = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Filter and Sort Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center border-b border-charcoal/10 pb-6 mb-10 gap-4">
-          <div className="text-sm text-charcoal/60 tracking-wider">
-            Showing {products.length} designs
+        {/* Filter Bar */}
+        <div className="flex flex-col lg:flex-row justify-between items-center border-b border-charcoal/10 pb-6 mb-10 gap-6">
+          {/* Search */}
+          <div className="flex items-center w-full lg:w-1/3 border border-charcoal/20 bg-white px-4 py-2">
+            <Search size={18} className="text-charcoal/40 mr-2" />
+            <input
+              type="text"
+              placeholder="Search designs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-transparent focus:outline-none text-sm text-charcoal"
+            />
           </div>
 
-          <div className="flex items-center space-x-6">
+          {/* Category Filters */}
+          <div className="flex overflow-x-auto w-full lg:w-auto space-x-6 pb-2 lg:pb-0 hide-scrollbar">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`text-sm tracking-widest uppercase whitespace-nowrap transition-colors ${selectedCategory === cat ? "text-burgundy font-semibold border-b-2 border-burgundy pb-1" : "text-charcoal/60 hover:text-burgundy"}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Sort */}
+          <div className="flex items-center w-full lg:w-auto justify-end">
             <div className="relative flex items-center group cursor-pointer">
               <span className="text-sm uppercase tracking-wider mr-2 group-hover:text-gold transition-colors">
                 Sort By
@@ -78,22 +128,16 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Loading State */}
-        {loading && (
+        {/* Product Grid */}
+        {loading ? (
           <div className="flex justify-center py-20">
             <Loader className="animate-spin text-burgundy" size={40} />
           </div>
-        )}
-
-        {/* Error State */}
-        {error && <div className="text-center text-red-500 py-20">{error}</div>}
-
-        {/* Product Grid */}
-        {!loading && !error && (
+        ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
             {products.map((product, index) => (
               <motion.div
-                key={product._id} // Using MongoDB _id now
+                key={product._id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -103,18 +147,12 @@ const Shop = () => {
                   to={`/product/${product._id}`}
                   className="block relative aspect-[3/4] overflow-hidden bg-white mb-6"
                 >
-                  {product.isNewArrival && (
-                    <span className="absolute top-4 left-4 z-10 bg-ivory text-burgundy text-[10px] font-bold uppercase tracking-widest px-3 py-1">
-                      New
-                    </span>
-                  )}
                   <img
                     src={product.coverImage}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </Link>
-
                 <div className="text-center">
                   <p className="text-xs text-gold uppercase tracking-widest mb-1">
                     {product.category}
@@ -122,7 +160,6 @@ const Shop = () => {
                   <h3 className="font-serif text-xl text-charcoal mb-2 group-hover:text-burgundy transition-colors">
                     <Link to={`/product/${product._id}`}>{product.name}</Link>
                   </h3>
-
                   <div className="flex items-center justify-center space-x-3 text-sm">
                     <span className="font-medium text-charcoal">
                       {formatPrice(product.sellingPrice)}
@@ -136,10 +173,9 @@ const Shop = () => {
                 </div>
               </motion.div>
             ))}
-
             {products.length === 0 && (
               <div className="col-span-full text-center py-20 text-charcoal/60">
-                No products found in the database yet.
+                No products found matching your filters.
               </div>
             )}
           </div>

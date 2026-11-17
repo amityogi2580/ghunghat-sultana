@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="col-span-1 md:col-span-2">
           <h2 className="text-4xl font-serif text-gold mb-4">
-            Ghunghat Sultana
+            Ghunghat Fashion
           </h2>
           <p className="text-ivory/60 font-sans text-sm max-w-sm leading-relaxed">
             Curating premium Indian fashion and heritage designs for the modern
@@ -52,7 +52,7 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-ivory/10 text-center text-xs text-ivory/40">
-        &copy; {new Date().getFullYear()} Ghunghat Sultana. All rights reserved.
+        &copy; {new Date().getFullYear()} Ghunghat Fashion. All rights reserved.
       </div>
     </footer>
   );

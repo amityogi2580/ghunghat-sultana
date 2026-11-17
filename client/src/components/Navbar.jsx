@@ -25,7 +25,7 @@ const Navbar = () => {
           to="/"
           className="text-3xl font-serif font-semibold text-burgundy tracking-wide"
         >
-          Ghunghat Sultana
+          Ghunghat Fashion
         </Link>
 
         <div className="flex items-center space-x-6 text-charcoal">

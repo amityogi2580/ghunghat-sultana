@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const About = () => {
   return (
     <div className="bg-ivory min-h-screen">
-      {/* Hero */}
       <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=2000&auto=format&fit=crop"
@@ -21,12 +20,11 @@ const About = () => {
             Our Story
           </motion.h1>
           <p className="text-charcoal uppercase tracking-[0.2em] text-sm font-medium">
-            The Journey of Ghunghat Sultana
+            The Journey of Ghunghat Fashion
           </p>
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-24 space-y-16">
         <div className="text-center">
           <h2 className="text-3xl font-serif text-burgundy mb-6">
@@ -34,7 +32,7 @@ const About = () => {
           </h2>
           <p className="text-charcoal/70 leading-relaxed text-lg">
             Founded with a passion for preserving the rich textile traditions of
-            India, Ghunghat Sultana is more than just a fashion label—it is a
+            India, Ghunghat Fashion is more than just a fashion label—it is a
             celebration of craftsmanship. Every piece tells a story of heritage,
             woven together with modern aesthetics for the contemporary muse.
           </p>
@@ -75,7 +73,7 @@ const About = () => {
             Our Promise
           </h3>
           <p className="text-charcoal/70 leading-relaxed">
-            When you choose Ghunghat Sultana, you are not just buying an outfit;
+            When you choose Ghunghat Fashion, you are not just buying an outfit;
             you are supporting a legacy of artistry and bringing home a piece of
             India's soul.
           </p>

@@ -38,9 +38,7 @@ const ProductDetails = () => {
     }).format(price);
   };
 
-  // NEW: Handle Tracking and WhatsApp Redirect
   const handleWhatsAppEnquiry = () => {
-    // 1. Fire and forget the tracking API call
     api
       .post("/enquiries", {
         productId: product._id,
@@ -48,9 +46,8 @@ const ProductDetails = () => {
       })
       .catch((err) => console.error("Tracking failed:", err));
 
-    // 2. Open WhatsApp immediately
     const message = encodeURIComponent(
-      `Hello Ghunghat Sultana, I am interested in the "${product.name}" (Price: ${formatPrice(product.sellingPrice)}). Link: ${window.location.href}`,
+      `Hello Ghunghat Fashion, I am interested in the "${product.name}" (Price: ${formatPrice(product.sellingPrice)}). Link: ${window.location.href}`,
     );
     const cleanNumber = settings.whatsappNumber.replace(/\D/g, "");
     window.open(`https://wa.me/${cleanNumber}?text=${message}`, "_blank");
@@ -159,7 +156,6 @@ const ProductDetails = () => {
             </p>
 
             <div className="flex flex-col space-y-4">
-              {/* UPDATED BUTTON */}
               <button
                 onClick={handleWhatsAppEnquiry}
                 className="w-full flex items-center justify-center bg-burgundy text-ivory py-4 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors"

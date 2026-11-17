@@ -22,7 +22,7 @@ const WhatsAppWidget = () => {
   if (!phoneNumber) return null;
 
   const message = encodeURIComponent(
-    "Hello Ghunghat Sultana! I have a question about your designs.",
+    "Hello Ghunghat Fashion! I have a question about your designs.",
   );
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 

@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-ivory: #F7F3ED;
+  --color-burgundy: #541F2A;
+  --color-gold: #B49A70;
+  --color-charcoal: #211C1A;
+  --color-beige: #E9DED1;
+
+  /* Typography */
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Montserrat", sans-serif;
+}
+
+/* Base styles for the body */
+@layer base {
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}

@@ -56,7 +56,7 @@ const Hero = () => {
             className="absolute -bottom-8 -left-8 w-40 h-56 md:w-56 md:h-72 border-[8px] border-ivory hidden lg:block"
           >
             <img
-              src="https://images.unsplash.com/photo-1583391733958-d25e07fac04f?q=80&w=800&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop"
               alt="Detail shot"
               className="w-full h-full object-cover"
             />

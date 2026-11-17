@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-// Public
+// Public Layouts & Pages
 import PublicLayout from "./layouts/PublicLayout";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -9,7 +9,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
-// Admin
+// Admin Layouts & Pages
 import AdminLayout from "./layouts/AdminLayout";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -19,7 +19,7 @@ import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminCollections from "./pages/admin/AdminCollections";
-import AdminHomepage from "./pages/admin/AdminHomepage"; // <-- NEW
+import AdminHomepage from "./pages/admin/AdminHomepage";
 import AdminSettings from "./pages/admin/AdminSettings";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
           <Route path="products/edit/:id" element={<EditProduct />} />
           <Route path="categories" element={<AdminCategories />} />
           <Route path="collections" element={<AdminCollections />} />
-          <Route path="homepage" element={<AdminHomepage />} /> {/* <-- NEW */}
+          <Route path="homepage" element={<AdminHomepage />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Route>

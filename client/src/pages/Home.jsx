@@ -1,4 +1,5 @@
 import Hero from "../components/home/Hero";
+import Marquee from "../components/home/Marquee";
 import CollectionShowcase from "../components/home/CollectionShowcase";
 import FeaturedDesigns from "../components/home/FeaturedDesigns";
 import BrandStory from "../components/home/BrandStory";
@@ -7,10 +8,10 @@ const Home = () => {
   return (
     <div className="w-full">
       <Hero />
+      <Marquee />
       <CollectionShowcase />
       <FeaturedDesigns />
       <BrandStory />
-      {/* Next sections: Instagram Gallery, Contact CTA */}
     </div>
   );
 };

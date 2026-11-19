@@ -22,34 +22,40 @@ import AdminCollections from "./pages/admin/AdminCollections";
 import AdminHomepage from "./pages/admin/AdminHomepage";
 import AdminSettings from "./pages/admin/AdminSettings";
 
+// Custom Cursor
+import CustomCursor from "./components/CustomCursor";
+
 function App() {
   return (
-    <Routes>
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-
-      <Route path="/admin/login" element={<AdminLogin />} />
-
-      <Route element={<PrivateRoute />}>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="products" element={<AdminProducts />} />
-          <Route path="products/add" element={<AddProduct />} />
-          <Route path="products/edit/:id" element={<EditProduct />} />
-          <Route path="categories" element={<AdminCategories />} />
-          <Route path="collections" element={<AdminCollections />} />
-          <Route path="homepage" element={<AdminHomepage />} />
-          <Route path="settings" element={<AdminSettings />} />
+    <>
+      <CustomCursor />
+      <Routes>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-      </Route>
-    </Routes>
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="products/add" element={<AddProduct />} />
+            <Route path="products/edit/:id" element={<EditProduct />} />
+            <Route path="categories" element={<AdminCategories />} />
+            <Route path="collections" element={<AdminCollections />} />
+            <Route path="homepage" element={<AdminHomepage />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
+        </Route>
+      </Routes>
+    </>
   );
 }
 

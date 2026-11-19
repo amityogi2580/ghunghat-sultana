@@ -9,12 +9,10 @@ const Shop = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOption, setSortOption] = useState("featured");
 
-  // Fetch Categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -27,12 +25,10 @@ const Shop = () => {
     fetchCategories();
   }, []);
 
-  // Fetch Products whenever filters change
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // Build the URL with query parameters
         let url = `/products?`;
         if (searchTerm) url += `search=${searchTerm}&`;
         if (selectedCategory !== "All") url += `category=${selectedCategory}&`;
@@ -47,7 +43,6 @@ const Shop = () => {
       }
     };
 
-    // Debounce search slightly so it doesn't fire on every single keystroke
     const delayDebounceFn = setTimeout(() => {
       fetchProducts();
     }, 300);
@@ -81,9 +76,7 @@ const Shop = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Filter Bar */}
         <div className="flex flex-col lg:flex-row justify-between items-center border-b border-charcoal/10 pb-6 mb-10 gap-6">
-          {/* Search */}
           <div className="flex items-center w-full lg:w-1/3 border border-charcoal/20 bg-white px-4 py-2">
             <Search size={18} className="text-charcoal/40 mr-2" />
             <input
@@ -95,7 +88,6 @@ const Shop = () => {
             />
           </div>
 
-          {/* Category Filters */}
           <div className="flex overflow-x-auto w-full lg:w-auto space-x-6 pb-2 lg:pb-0 hide-scrollbar">
             {categories.map((cat) => (
               <button
@@ -108,7 +100,6 @@ const Shop = () => {
             ))}
           </div>
 
-          {/* Sort */}
           <div className="flex items-center w-full lg:w-auto justify-end">
             <div className="relative flex items-center group cursor-pointer">
               <span className="text-sm uppercase tracking-wider mr-2 group-hover:text-gold transition-colors">
@@ -128,7 +119,6 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Product Grid */}
         {loading ? (
           <div className="flex justify-center py-20">
             <Loader className="animate-spin text-burgundy" size={40} />
@@ -150,6 +140,7 @@ const Shop = () => {
                   <img
                     src={product.coverImage}
                     alt={product.name}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </Link>

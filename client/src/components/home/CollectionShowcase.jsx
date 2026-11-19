@@ -8,14 +8,43 @@ const CollectionShowcase = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fallback collections in case the database is empty
+  const fallbackCollections = [
+    {
+      _id: "fallback-1",
+      name: "Bridal",
+      description: "Heirloom pieces for your special day",
+      image:
+        "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1000&auto=format&fit=crop",
+    },
+    {
+      _id: "fallback-2",
+      name: "Festive",
+      description: "Celebrate in modern silhouettes",
+      image:
+        "https://images.unsplash.com/photo-1605763240000-7e93b172d754?q=80&w=1000&auto=format&fit=crop",
+    },
+    {
+      _id: "fallback-3",
+      name: "Everyday",
+      description: "Refined comfort for daily wear",
+      image:
+        "https://images.unsplash.com/photo-1583391733958-d25e07fac04f?q=80&w=1000&auto=format&fit=crop",
+    },
+  ];
+
   useEffect(() => {
     const fetchCollections = async () => {
       try {
         const response = await api.get("/collections");
-        // Take up to 3 collections for the homepage
-        setCollections(response.data.data.slice(0, 3));
+        if (response.data.data && response.data.data.length > 0) {
+          setCollections(response.data.data.slice(0, 3));
+        } else {
+          setCollections(fallbackCollections);
+        }
       } catch (error) {
         console.error("Error fetching collections:", error);
+        setCollections(fallbackCollections);
       } finally {
         setLoading(false);
       }
@@ -23,8 +52,7 @@ const CollectionShowcase = () => {
     fetchCollections();
   }, []);
 
-  // A fallback image in case the admin creates a collection without a specific image
-  const fallbackImage =
+  const defaultImage =
     "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop";
 
   return (
@@ -59,16 +87,18 @@ const CollectionShowcase = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 className={`group relative overflow-hidden ${
-                  index === 1 ? "md:mt-12" : "" // Staggers the middle image
+                  index === 1 ? "md:mt-12" : ""
                 }`}
               >
+                {/* FIXED LINK HERE: Goes to shop page with category filter */}
                 <Link
-                  to={`/collections/${collection._id}`}
+                  to={`/shop?category=${collection.name}`}
                   className="block relative aspect-[3/4]"
                 >
                   <img
-                    src={fallbackImage} // We can add an image field to the Collection model later
+                    src={collection.image || defaultImage}
                     alt={collection.name}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
                   />
 
@@ -86,12 +116,6 @@ const CollectionShowcase = () => {
                 </Link>
               </motion.div>
             ))}
-
-            {collections.length === 0 && (
-              <div className="col-span-3 text-center text-charcoal/60 py-10">
-                No collections created yet. Add some from the Admin panel!
-              </div>
-            )}
           </div>
         )}
       </div>

@@ -21,13 +21,22 @@ const ProductDetails = () => {
         ]);
         setProduct(prodRes.data.data);
         setSettings(setRes.data.data);
+
+        // DYNAMIC SEO TITLE
+        document.title = `${prodRes.data.data.name} | Ghunghat Fashion`;
       } catch (err) {
         setError("Product not found");
+        document.title = "Product Not Found | Ghunghat Fashion";
       } finally {
         setLoading(false);
       }
     };
     fetchData();
+
+    // Reset title when leaving the page
+    return () => {
+      document.title = "Ghunghat Fashion | Premium Indian Couture";
+    };
   }, [id]);
 
   const formatPrice = (price) => {
@@ -55,13 +64,13 @@ const ProductDetails = () => {
 
   if (loading)
     return (
-      <div className="h-[60vh] flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center pt-20">
         <Loader className="animate-spin text-burgundy" size={40} />
       </div>
     );
   if (error || !product)
     return (
-      <div className="h-[60vh] flex flex-col items-center justify-center">
+      <div className="h-screen flex flex-col items-center justify-center pt-20">
         <h1 className="text-3xl font-serif text-burgundy mb-4">
           Product Not Found
         </h1>
@@ -75,7 +84,7 @@ const ProductDetails = () => {
     );
 
   return (
-    <div className="bg-ivory min-h-screen py-12">
+    <div className="bg-ivory min-h-screen py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-8">
           <Link
@@ -92,7 +101,7 @@ const ProductDetails = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex flex-col-reverse md:flex-row gap-4"
           >
-            <div className="flex md:flex-col gap-4 overflow-x-auto">
+            <div className="flex md:flex-col gap-4 overflow-x-auto hide-scrollbar">
               {product.images.map((img, index) => (
                 <button
                   key={index}
@@ -107,8 +116,12 @@ const ProductDetails = () => {
                 </button>
               ))}
             </div>
-            <div className="w-full aspect-[3/4] bg-white">
-              <img
+            <div className="w-full aspect-[3/4] bg-white overflow-hidden">
+              <motion.img
+                key={selectedImage}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
                 src={product.images[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
@@ -124,7 +137,7 @@ const ProductDetails = () => {
             <p className="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-3">
               {product.category}
             </p>
-            <h1 className="text-4xl md:text-5xl font-serif text-burgundy mb-4">
+            <h1 className="text-4xl md:text-5xl font-serif text-burgundy mb-4 leading-tight">
               {product.name}
             </h1>
 
@@ -158,7 +171,7 @@ const ProductDetails = () => {
             <div className="flex flex-col space-y-4">
               <button
                 onClick={handleWhatsAppEnquiry}
-                className="w-full flex items-center justify-center bg-burgundy text-ivory py-4 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors"
+                className="w-full flex items-center justify-center bg-burgundy text-ivory py-4 text-sm tracking-widest uppercase hover:bg-charcoal transition-colors shadow-lg"
               >
                 <MessageCircle size={18} className="mr-3" /> Enquire on WhatsApp
               </button>

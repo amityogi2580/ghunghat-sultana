@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const settingSchema = new mongoose.Schema(
   {
-    whatsappNumber: { type: String, default: '+919999999999' },
-    instagramUrl: { type: String, default: 'https://instagram.com/ghunghatfashion' },
+    whatsappNumber: { type: String, default: '+919782675316' },
+    instagramUrl: { type: String, default: 'https://www.instagram.com/ghunghat_sultana_' },
     contactEmail: { type: String, default: 'hello@ghunghatfashion.com' },
     announcementText: { type: String, default: 'Complimentary Shipping on Orders Above ₹5000 | Worldwide Delivery' },
     

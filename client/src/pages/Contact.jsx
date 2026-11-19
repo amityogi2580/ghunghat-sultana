@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Send, Instagram } from "lucide-react";
+import { Phone, Mail, MapPin, Send, Camera } from "lucide-react"; // <-- Replaced Instagram with Camera
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,6 @@ const Contact = () => {
           transition={{ duration: 0.8 }}
           className="bg-charcoal text-ivory p-12 lg:p-24 flex flex-col justify-center relative overflow-hidden"
         >
-          {/* Decorative Background Text */}
           <h2 className="absolute -top-10 -right-10 text-[150px] font-serif text-white/5 pointer-events-none">
             GS
           </h2>
@@ -83,7 +82,7 @@ const Contact = () => {
 
               <div className="flex items-center group cursor-pointer">
                 <div className="bg-white/5 border border-white/10 p-4 rounded-full text-gold mr-6 group-hover:bg-burgundy group-hover:border-burgundy transition-all duration-300">
-                  <Instagram size={24} />
+                  <Camera size={24} /> {/* <-- Using Camera icon here */}
                 </div>
                 <div>
                   <h3 className="text-xs uppercase tracking-widest text-ivory/50 mb-1">

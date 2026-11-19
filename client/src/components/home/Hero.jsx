@@ -31,71 +31,96 @@ const Hero = () => {
 
   if (loading)
     return (
-      <div className="h-[85vh] flex items-center justify-center bg-ivory">
+      <div className="h-screen flex items-center justify-center bg-ivory">
         <Loader className="animate-spin text-burgundy" size={40} />
       </div>
     );
 
-  // Split the title to style the last word differently (e.g., italic)
   const titleWords = settings.heroTitle.split(" ");
-  const lastWord = titleWords.pop();
-  const mainTitle = titleWords.join(" ");
 
   return (
-    <section className="relative w-full min-h-[85vh] flex items-center bg-ivory overflow-hidden py-12 md:py-0">
-      <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="col-span-1 md:col-span-5 flex flex-col justify-center order-2 md:order-1"
-        >
-          <span className="text-gold uppercase tracking-[0.2em] text-sm font-medium mb-4">
-            The New Collection
-          </span>
-          <h1 className="text-5xl md:text-7xl font-serif text-burgundy leading-[1.1] mb-6">
-            {mainTitle} <br />
-            <span className="italic font-light">{lastWord}</span>
-          </h1>
-          <p className="text-charcoal/70 text-base md:text-lg mb-10 max-w-md leading-relaxed">
-            {settings.heroSubtitle}
-          </p>
-          <div className="flex items-center space-x-6">
-            <Link
-              to="/shop"
-              className="bg-burgundy text-ivory px-8 py-4 text-xs tracking-widest uppercase hover:bg-charcoal transition-colors duration-300"
-            >
-              Shop The Collection
-            </Link>
-          </div>
-        </motion.div>
+    <section className="relative w-full h-screen flex items-center bg-ivory overflow-hidden">
+      {/* Background Image with slow zoom */}
+      <motion.div
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className="absolute inset-0 w-full h-full"
+      >
+        <img
+          src={settings.heroImage}
+          alt="Hero"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/20" />{" "}
+        {/* Slight dark overlay for text readability */}
+      </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="col-span-1 md:col-span-7 order-1 md:order-2 relative h-[50vh] md:h-[75vh] w-full"
-        >
-          <img
-            src={settings.heroImage}
-            alt="Hero Main"
-            className="w-full h-full object-cover object-center shadow-xl"
-          />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full mt-20">
+        <div className="max-w-2xl">
+          {/* Staggered Word Reveal */}
+          <div className="overflow-hidden mb-6">
+            <motion.h1
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
+              className="text-6xl md:text-8xl font-serif text-ivory leading-[1.1] drop-shadow-lg flex flex-wrap gap-x-4"
+            >
+              {titleWords.map((word, i) => (
+                <span
+                  key={i}
+                  className={
+                    i === titleWords.length - 1 ? "italic font-light" : ""
+                  }
+                >
+                  {word}
+                </span>
+              ))}
+            </motion.h1>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="text-ivory/90 text-sm md:text-base mb-10 max-w-md leading-relaxed font-medium tracking-wide"
+          >
+            {settings.heroSubtitle}
+          </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="absolute -bottom-8 -left-8 w-40 h-56 md:w-56 md:h-72 border-[8px] border-ivory hidden lg:block"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
           >
-            <img
-              src={settings.heroFloatImage}
-              alt="Hero Detail"
-              className="w-full h-full object-cover"
-            />
+            <Link
+              to="/shop"
+              className="bg-ivory text-charcoal px-10 py-5 text-xs tracking-[0.2em] uppercase hover:bg-burgundy hover:text-ivory transition-all duration-500 inline-block font-semibold"
+            >
+              Explore The Collection
+            </Link>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-ivory/70"
+      >
+        <span className="text-[10px] uppercase tracking-[0.3em] mb-2">
+          Scroll
+        </span>
+        <div className="w-[1px] h-12 bg-ivory/30 overflow-hidden">
+          <motion.div
+            animate={{ y: [0, 48] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+            className="w-full h-1/2 bg-ivory"
+          />
+        </div>
+      </motion.div>
     </section>
   );
 };

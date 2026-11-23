@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronDown, Loader, Search, SlidersHorizontal } from "lucide-react";
+import { ChevronDown, Loader, Search, Heart } from "lucide-react";
 import api from "../services/api";
+import { useWishlist } from "../context/WishlistContext";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,8 @@ const Shop = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortOption, setSortOption] = useState("featured");
+
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,7 +52,7 @@ const Shop = () => {
     const delayDebounceFn = setTimeout(() => {
       fetchProducts();
     }, 300);
-    return () => clearTimeout(delayDebounceFn);
+    return () => clearTimeout(debounceFn);
   }, [searchTerm, selectedCategory, sortOption]);
 
   const formatPrice = (price) => {
@@ -63,7 +66,6 @@ const Shop = () => {
   return (
     <div className="bg-ivory min-h-screen pt-24">
       <div className="max-w-[1400px] mx-auto px-6 py-12">
-        {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-7xl font-serif text-charcoal mb-4">
             The Collection
@@ -73,7 +75,6 @@ const Shop = () => {
           </p>
         </div>
 
-        {/* Filter Bar */}
         <div className="flex flex-col lg:flex-row justify-between items-center border-y border-charcoal/10 py-4 mb-12 gap-4">
           <div className="flex items-center w-full lg:w-64 bg-transparent">
             <Search size={16} className="text-charcoal/40 mr-3" />
@@ -117,7 +118,6 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Product Grid */}
         {loading ? (
           <div className="flex justify-center py-32">
             <Loader className="animate-spin text-burgundy" size={32} />
@@ -133,22 +133,37 @@ const Shop = () => {
                 transition={{ duration: 0.6, delay: (index % 4) * 0.1 }}
                 className="group"
               >
-                <Link
-                  to={`/product/${product._id}`}
-                  className="block relative aspect-[3/4] overflow-hidden bg-[#f5f5f5] mb-4"
-                >
-                  <img
-                    src={product.coverImage}
-                    alt={product.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
-                  />
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5] mb-4">
+                  <Link to={`/product/${product._id}`}>
+                    <img
+                      src={product.coverImage}
+                      alt={product.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+                    />
+                  </Link>
+
+                  {/* Wishlist Button Overlay */}
+                  <button
+                    onClick={() => toggleWishlist(product)}
+                    className="absolute top-4 right-4 bg-white/70 backdrop-blur-md p-2 rounded-full text-charcoal hover:text-burgundy hover:bg-white transition-all duration-300 shadow-sm"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        isInWishlist(product._id)
+                          ? "fill-burgundy text-burgundy"
+                          : ""
+                      }
+                    />
+                  </button>
+
                   {product.isNewArrival && (
-                    <span className="absolute top-4 left-4 bg-white text-charcoal text-[9px] font-bold uppercase tracking-[0.15em] px-3 py-1.5">
+                    <span className="absolute top-4 left-4 bg-white text-charcoal text-[9px] font-bold uppercase tracking-[0.15em] px-3 py-1.5 pointer-events-none">
                       New
                     </span>
                   )}
-                </Link>
+                </div>
 
                 <div className="text-center px-2">
                   <p className="text-[10px] text-charcoal/40 uppercase tracking-[0.15em] mb-1">

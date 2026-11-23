@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, ShoppingBag } from "lucide-react";
+import { Search, Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useWishlist } from "../context/WishlistContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { wishlist, setIsDrawerOpen } = useWishlist();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -20,7 +22,6 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Shop All", path: "/shop" },
-    { name: "Collections", path: "/shop" }, // Placeholder for future collections page
     { name: "Our Story", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
@@ -38,7 +39,6 @@ const Navbar = () => {
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-10 text-[11px] tracking-[0.2em] uppercase font-medium">
             {navLinks.map((link) => (
               <Link
@@ -52,22 +52,38 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Luxury Wordmark */}
           <Link
             to="/"
-            className="text-2xl lg:text-3xl font-serif font-semibold text-burgundy tracking-wide z-50 text-center"
+            className="text-2xl lg:text-3xl font-serif font-semibold text-burgundy tracking-wide z-50 text-center absolute left-1/2 -translate-x-1/2"
           >
             Ghunghat Fashion
           </Link>
 
-          {/* Icons */}
           <div className="flex items-center space-x-6 text-charcoal">
-            <button className="hover:text-burgundy transition-colors">
+            <button className="hover:text-burgundy transition-colors hidden sm:block">
               <Search size={20} strokeWidth={1.5} />
             </button>
+
+            {/* WISHLIST BUTTON */}
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="relative hover:text-burgundy transition-colors group"
+            >
+              <Heart
+                size={20}
+                strokeWidth={1.5}
+                className="group-hover:fill-burgundy transition-all"
+              />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-burgundy text-ivory text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </button>
+
             <Link
               to="/admin/login"
-              className="text-[11px] tracking-[0.2em] uppercase hover:text-burgundy transition-colors hidden sm:block"
+              className="text-[11px] tracking-[0.2em] uppercase hover:text-burgundy transition-colors hidden sm:block ml-2"
             >
               Admin
             </Link>
@@ -75,7 +91,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div

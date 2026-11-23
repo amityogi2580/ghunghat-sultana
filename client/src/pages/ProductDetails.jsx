@@ -8,8 +8,10 @@ import {
   Loader,
   ShieldCheck,
   Truck,
+  Heart,
 } from "lucide-react";
 import api from "../services/api";
+import { useWishlist } from "../context/WishlistContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -18,6 +20,8 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
+
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,7 +98,6 @@ const ProductDetails = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          {/* Left: Images */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -128,7 +131,6 @@ const ProductDetails = () => {
             </div>
           </motion.div>
 
-          {/* Right: Info */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -174,12 +176,24 @@ const ProductDetails = () => {
               >
                 <MessageCircle size={16} className="mr-2" /> Enquire on WhatsApp
               </button>
+              <button
+                onClick={() => toggleWishlist(product)}
+                className="px-6 py-4 border border-charcoal/20 text-charcoal hover:border-burgundy hover:text-burgundy transition-colors flex items-center justify-center"
+              >
+                <Heart
+                  size={16}
+                  className={
+                    isInWishlist(product._id)
+                      ? "fill-burgundy text-burgundy"
+                      : ""
+                  }
+                />
+              </button>
               <button className="px-6 py-4 border border-charcoal/20 text-charcoal hover:border-charcoal transition-colors">
                 <Share2 size={16} />
               </button>
             </div>
 
-            {/* Trust Badges */}
             <div className="border-t border-charcoal/10 pt-6 space-y-4">
               <div className="flex items-center text-xs text-charcoal/60">
                 <ShieldCheck size={16} className="mr-3 text-burgundy" />{" "}
@@ -194,7 +208,6 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Mobile Sticky Enquiry Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white border-t border-charcoal/10 p-4 z-40 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div>
           <p className="text-[10px] uppercase tracking-widest text-charcoal/50 mb-1 truncate max-w-[150px]">

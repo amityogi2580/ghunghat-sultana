@@ -3,10 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { Search, Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWishlist } from "../context/WishlistContext";
+import SearchOverlay from "./SearchOverlay"; // <-- Import Overlay
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // <-- New State
   const location = useLocation();
   const { wishlist, setIsDrawerOpen } = useWishlist();
 
@@ -32,7 +34,6 @@ const Navbar = () => {
         className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? "bg-ivory/95 backdrop-blur-lg py-3 shadow-sm border-b border-charcoal/5" : "bg-transparent py-4 md:py-6"}`}
       >
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex items-center justify-between">
-          {/* Mobile Menu Toggle */}
           <button
             className="lg:hidden text-charcoal z-50 p-2 -ml-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -40,7 +41,6 @@ const Navbar = () => {
             {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
-          {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-10 text-[11px] tracking-[0.2em] uppercase font-medium">
             {navLinks.map((link) => (
               <Link
@@ -54,7 +54,6 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Luxury Wordmark (Scaled for Mobile) */}
           <Link
             to="/"
             className="text-xl md:text-3xl font-serif font-semibold text-burgundy tracking-wide absolute left-1/2 -translate-x-1/2"
@@ -62,9 +61,12 @@ const Navbar = () => {
             Ghunghat Fashion
           </Link>
 
-          {/* Icons */}
           <div className="flex items-center space-x-4 md:space-x-6 text-charcoal">
-            <button className="hover:text-burgundy transition-colors hidden sm:block">
+            {/* SEARCH BUTTON TRIGGER */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="hover:text-burgundy transition-colors hidden sm:block"
+            >
               <Search size={18} strokeWidth={1.5} />
             </button>
 
@@ -94,7 +96,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -121,6 +122,12 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* RENDER SEARCH OVERLAY */}
+      <SearchOverlay
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
     </>
   );
 };

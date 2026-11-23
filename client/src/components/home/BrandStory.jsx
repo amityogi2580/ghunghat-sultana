@@ -3,54 +3,51 @@ import { Link } from "react-router-dom";
 
 const BrandStory = () => {
   return (
-    <section className="py-24 bg-beige relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-32 bg-ivory relative overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* Image Side (Overlapping layout) */}
+          {/* Image Composition */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="relative h-[500px] lg:h-[600px] w-full"
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="relative h-[600px] w-full"
           >
-            {/* Main Image */}
             <img
               src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=1000&auto=format&fit=crop"
-              alt="Craftsmanship detail"
-              className="w-full h-full object-cover shadow-2xl relative z-10"
+              alt="Craftsmanship"
+              className="w-[80%] h-full object-cover absolute right-0 top-0"
             />
-
-            {/* Decorative Gold Border Frame */}
-            <div className="absolute top-8 -right-8 w-full h-full border border-gold z-0 hidden md:block" />
-
-            {/* Small Floating Image */}
             <img
               src="https://images.unsplash.com/photo-1590736969955-71cc94901144?q=80&w=600&auto=format&fit=crop"
-              alt="Fabric detail"
-              className="absolute -bottom-12 -right-8 w-48 h-64 object-cover border-8 border-beige shadow-xl z-20 hidden md:block"
+              alt="Detail"
+              className="w-[45%] h-[60%] object-cover absolute left-0 bottom-0 border-[12px] border-ivory"
             />
+            {/* Decorative Text */}
+            <h2 className="absolute top-10 left-10 text-8xl font-serif text-charcoal/5 pointer-events-none -z-10">
+              GS
+            </h2>
           </motion.div>
 
-          {/* Text Side */}
+          {/* Text */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col justify-center"
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
           >
-            <span className="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-4">
-              The Ghunghat Sultana Legacy
+            <span className="text-burgundy uppercase tracking-[0.3em] text-[10px] font-bold mb-6 block">
+              Our Heritage
             </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-burgundy leading-tight mb-8">
-              Where Heritage <br />
-              Meets Modern <span className="italic font-light">Artistry</span>
+            <h2 className="text-4xl md:text-6xl font-serif text-charcoal leading-tight mb-8">
+              Where Heritage Meets <br />
+              <span className="italic text-burgundy">Modern Artistry</span>
             </h2>
 
-            <div className="space-y-6 text-charcoal/70 font-sans leading-relaxed">
+            <div className="space-y-6 text-charcoal/60 font-light leading-loose text-sm md:text-base">
               <p>
-                Every piece at Ghunghat Sultana is a testament to the rich
+                Every piece at Ghunghat Fashion is a testament to the rich
                 tapestry of Indian craftsmanship. We believe that true luxury
                 lies in the details—the delicate hand-embroidery, the weight of
                 pure silk, and the timeless silhouettes that transcend trends.
@@ -63,10 +60,10 @@ const BrandStory = () => {
               </p>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-12">
               <Link
                 to="/about"
-                className="inline-block text-sm tracking-widest uppercase border-b border-burgundy text-burgundy pb-1 hover:text-gold hover:border-gold transition-colors duration-300"
+                className="border-b border-charcoal text-charcoal pb-2 text-[11px] tracking-[0.2em] uppercase hover:text-burgundy hover:border-burgundy transition-colors"
               >
                 Discover Our Journey
               </Link>

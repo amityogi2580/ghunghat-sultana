@@ -57,9 +57,12 @@ const ProductDetails = () => {
     api
       .post("/enquiries", { productId: product._id, productName: product.name })
       .catch(console.error);
+
+    // Added Product ID to the message as requested
     const message = encodeURIComponent(
-      `Hello Ghunghat Fashion, I am interested in the "${product.name}" (Price: ${formatPrice(product.sellingPrice)}). Link: ${window.location.href}`,
+      `Hello Ghunghat Fashion,\n\nI am interested in the following design:\n\n*Product Name:* ${product.name}\n*Product ID:* ${product._id.slice(-6).toUpperCase()}\n*Price:* ${formatPrice(product.sellingPrice)}\n*Link:* ${window.location.href}\n\nCould you please provide more details?`,
     );
+
     const cleanNumber = settings.whatsappNumber.replace(/\D/g, "");
     window.open(`https://wa.me/${cleanNumber}?text=${message}`, "_blank");
   };
@@ -86,29 +89,30 @@ const ProductDetails = () => {
     );
 
   return (
-    <div className="bg-ivory min-h-screen pt-24 pb-20 lg:pb-12">
-      <div className="max-w-[1400px] mx-auto px-6">
-        <div className="mb-8">
+    <div className="bg-ivory min-h-screen pt-20 md:pt-24 pb-24 lg:pb-12">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+        <div className="mb-4 md:mb-8">
           <Link
             to="/shop"
-            className="inline-flex items-center text-xs tracking-[0.15em] text-charcoal/50 hover:text-burgundy uppercase transition-colors"
+            className="inline-flex items-center text-[10px] md:text-xs tracking-[0.15em] text-charcoal/50 hover:text-burgundy uppercase transition-colors"
           >
             <ArrowLeft size={14} className="mr-2" /> Back to Collection
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20">
+          {/* Images */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4"
+            className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-3 md:gap-4"
           >
-            <div className="flex md:flex-col gap-4 overflow-x-auto hide-scrollbar md:w-24 flex-shrink-0">
+            <div className="flex md:flex-col gap-3 overflow-x-auto hide-scrollbar md:w-24 flex-shrink-0">
               {product.images.map((img, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`w-20 md:w-full aspect-[3/4] flex-shrink-0 border ${selectedImage === index ? "border-burgundy" : "border-transparent opacity-60 hover:opacity-100"} transition-all`}
+                  className={`w-16 md:w-full aspect-[3/4] flex-shrink-0 border ${selectedImage === index ? "border-burgundy" : "border-transparent opacity-60 hover:opacity-100"} transition-all`}
                 >
                   <img
                     src={img}
@@ -131,28 +135,29 @@ const ProductDetails = () => {
             </div>
           </motion.div>
 
+          {/* Details */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-5 flex flex-col justify-center"
           >
-            <p className="text-[10px] text-charcoal/50 uppercase tracking-[0.2em] font-semibold mb-3">
+            <p className="text-[10px] text-charcoal/50 uppercase tracking-[0.2em] font-semibold mb-2 md:mb-3">
               {product.category}
             </p>
-            <h1 className="text-4xl md:text-5xl font-serif text-charcoal mb-4 leading-tight">
+            <h1 className="text-3xl md:text-5xl font-serif text-charcoal mb-3 md:mb-4 leading-tight">
               {product.name}
             </h1>
 
-            <div className="flex items-end space-x-4 mb-8">
-              <span className="text-xl font-medium text-charcoal">
+            <div className="flex items-end space-x-3 md:space-x-4 mb-6 md:mb-8">
+              <span className="text-lg md:text-xl font-medium text-charcoal">
                 {formatPrice(product.sellingPrice)}
               </span>
               {product.originalPrice > product.sellingPrice && (
                 <>
-                  <span className="text-sm text-charcoal/40 line-through mb-1">
+                  <span className="text-xs md:text-sm text-charcoal/40 line-through mb-0.5 md:mb-1">
                     {formatPrice(product.originalPrice)}
                   </span>
-                  <span className="text-[10px] text-burgundy font-bold tracking-wider mb-1 ml-2 uppercase">
+                  <span className="text-[9px] md:text-[10px] text-burgundy font-bold tracking-wider mb-0.5 md:mb-1 ml-1 md:ml-2 uppercase">
                     Save{" "}
                     {Math.round(
                       ((product.originalPrice - product.sellingPrice) /
@@ -165,20 +170,21 @@ const ProductDetails = () => {
               )}
             </div>
 
-            <p className="text-charcoal/70 text-sm leading-loose mb-10 font-light">
+            <p className="text-charcoal/70 text-xs md:text-sm leading-loose mb-8 md:mb-10 font-light">
               {product.description}
             </p>
 
-            <div className="flex space-x-4 mb-10">
+            <div className="flex space-x-3 md:space-x-4 mb-8 md:mb-10">
               <button
                 onClick={handleWhatsAppEnquiry}
-                className="flex-1 bg-charcoal text-ivory py-4 text-xs tracking-[0.2em] uppercase hover:bg-burgundy transition-colors duration-300 flex items-center justify-center"
+                className="flex-1 bg-charcoal text-ivory py-3.5 md:py-4 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-burgundy transition-colors duration-300 flex items-center justify-center"
               >
-                <MessageCircle size={16} className="mr-2" /> Enquire on WhatsApp
+                <MessageCircle size={14} className="mr-2 md:w-4 md:h-4" />{" "}
+                Enquire on WhatsApp
               </button>
               <button
                 onClick={() => toggleWishlist(product)}
-                className="px-6 py-4 border border-charcoal/20 text-charcoal hover:border-burgundy hover:text-burgundy transition-colors flex items-center justify-center"
+                className="px-4 md:px-6 py-3.5 md:py-4 border border-charcoal/20 text-charcoal hover:border-burgundy hover:text-burgundy transition-colors flex items-center justify-center"
               >
                 <Heart
                   size={16}
@@ -189,39 +195,40 @@ const ProductDetails = () => {
                   }
                 />
               </button>
-              <button className="px-6 py-4 border border-charcoal/20 text-charcoal hover:border-charcoal transition-colors">
+              <button className="px-4 md:px-6 py-3.5 md:py-4 border border-charcoal/20 text-charcoal hover:border-charcoal transition-colors hidden md:flex items-center justify-center">
                 <Share2 size={16} />
               </button>
             </div>
 
-            <div className="border-t border-charcoal/10 pt-6 space-y-4">
-              <div className="flex items-center text-xs text-charcoal/60">
-                <ShieldCheck size={16} className="mr-3 text-burgundy" />{" "}
+            <div className="border-t border-charcoal/10 pt-4 md:pt-6 space-y-3 md:space-y-4">
+              <div className="flex items-center text-[10px] md:text-xs text-charcoal/60">
+                <ShieldCheck size={14} className="mr-2 md:mr-3 text-burgundy" />{" "}
                 Authentic Handcrafted Pieces
               </div>
-              <div className="flex items-center text-xs text-charcoal/60">
-                <Truck size={16} className="mr-3 text-burgundy" /> Complimentary
-                Shipping in India
+              <div className="flex items-center text-[10px] md:text-xs text-charcoal/60">
+                <Truck size={14} className="mr-2 md:mr-3 text-burgundy" />{" "}
+                Complimentary Shipping in India
               </div>
             </div>
           </motion.div>
         </div>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white border-t border-charcoal/10 p-4 z-40 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <div>
-          <p className="text-[10px] uppercase tracking-widest text-charcoal/50 mb-1 truncate max-w-[150px]">
+      {/* Mobile Sticky Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-charcoal/10 p-3 pb-safe z-40 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div className="pl-1">
+          <p className="text-[9px] uppercase tracking-widest text-charcoal/50 mb-0.5 truncate max-w-[150px]">
             {product.name}
           </p>
-          <p className="font-medium text-charcoal">
+          <p className="font-medium text-sm text-charcoal">
             {formatPrice(product.sellingPrice)}
           </p>
         </div>
         <button
           onClick={handleWhatsAppEnquiry}
-          className="bg-burgundy text-ivory px-6 py-3 text-[10px] tracking-widest uppercase hover:bg-charcoal transition-colors flex items-center"
+          className="bg-burgundy text-ivory px-5 py-2.5 text-[10px] tracking-widest uppercase hover:bg-charcoal transition-colors flex items-center shadow-lg"
         >
-          <MessageCircle size={14} className="mr-2" /> Enquire
+          <MessageCircle size={14} className="mr-2" /> Enquire Now
         </button>
       </div>
     </div>

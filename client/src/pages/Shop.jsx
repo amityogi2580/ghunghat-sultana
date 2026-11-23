@@ -52,7 +52,7 @@ const Shop = () => {
     const delayDebounceFn = setTimeout(() => {
       fetchProducts();
     }, 300);
-    return () => clearTimeout(debounceFn);
+    return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, selectedCategory, sortOption]);
 
   const formatPrice = (price) => {
@@ -64,20 +64,22 @@ const Shop = () => {
   };
 
   return (
-    <div className="bg-ivory min-h-screen pt-24">
-      <div className="max-w-[1400px] mx-auto px-6 py-12">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-serif text-charcoal mb-4">
+    <div className="bg-ivory min-h-screen pt-20 md:pt-24">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-8 md:py-12">
+        {/* Header */}
+        <div className="text-center mb-10 md:mb-16">
+          <h1 className="text-4xl md:text-7xl font-serif text-charcoal mb-2 md:mb-4">
             The Collection
           </h1>
-          <p className="text-charcoal/50 uppercase tracking-[0.3em] text-xs font-medium">
+          <p className="text-charcoal/50 uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs font-medium">
             Explore our curated designs
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-between items-center border-y border-charcoal/10 py-4 mb-12 gap-4">
+        {/* Filter Bar */}
+        <div className="flex flex-col lg:flex-row justify-between items-center border-y border-charcoal/10 py-3 md:py-4 mb-8 md:mb-12 gap-3 md:gap-4">
           <div className="flex items-center w-full lg:w-64 bg-transparent">
-            <Search size={16} className="text-charcoal/40 mr-3" />
+            <Search size={16} className="text-charcoal/40 mr-2 md:mr-3" />
             <input
               type="text"
               placeholder="Search designs..."
@@ -87,21 +89,24 @@ const Shop = () => {
             />
           </div>
 
-          <div className="flex overflow-x-auto w-full lg:w-auto space-x-8 pb-2 lg:pb-0 hide-scrollbar justify-center">
+          <div className="flex overflow-x-auto w-full lg:w-auto space-x-4 md:space-x-8 pb-2 lg:pb-0 hide-scrollbar justify-start md:justify-center px-1">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`text-[11px] tracking-[0.15em] uppercase whitespace-nowrap transition-colors ${selectedCategory === cat ? "text-burgundy font-bold" : "text-charcoal/50 hover:text-charcoal"}`}
+                className={`text-[10px] md:text-[11px] tracking-[0.15em] uppercase whitespace-nowrap transition-colors ${selectedCategory === cat ? "text-burgundy font-bold" : "text-charcoal/50 hover:text-charcoal"}`}
               >
                 {cat}
               </button>
             ))}
           </div>
 
-          <div className="flex items-center justify-end w-full lg:w-64">
+          <div className="flex items-center justify-between w-full lg:w-64">
+            <span className="text-[10px] md:text-[11px] text-charcoal/50 uppercase tracking-widest lg:hidden">
+              {products.length} Items
+            </span>
             <div className="relative flex items-center group cursor-pointer">
-              <span className="text-[11px] tracking-[0.15em] uppercase mr-2 group-hover:text-burgundy transition-colors">
+              <span className="text-[10px] md:text-[11px] tracking-[0.15em] uppercase mr-2 group-hover:text-burgundy transition-colors">
                 Sort
               </span>
               <ChevronDown size={14} />
@@ -118,22 +123,23 @@ const Shop = () => {
           </div>
         </div>
 
+        {/* Product Grid - 2 Columns on Mobile */}
         {loading ? (
           <div className="flex justify-center py-32">
             <Loader className="animate-spin text-burgundy" size={32} />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-8 md:gap-x-6 md:gap-y-16">
             {products.map((product, index) => (
               <motion.div
                 key={product._id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: (index % 4) * 0.1 }}
+                transition={{ duration: 0.5, delay: (index % 4) * 0.05 }}
                 className="group"
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5] mb-4">
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f5f5] mb-3 md:mb-4">
                   <Link to={`/product/${product._id}`}>
                     <img
                       src={product.coverImage}
@@ -143,41 +149,36 @@ const Shop = () => {
                     />
                   </Link>
 
-                  {/* Wishlist Button Overlay */}
                   <button
                     onClick={() => toggleWishlist(product)}
-                    className="absolute top-4 right-4 bg-white/70 backdrop-blur-md p-2 rounded-full text-charcoal hover:text-burgundy hover:bg-white transition-all duration-300 shadow-sm"
+                    className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/70 backdrop-blur-md p-1.5 md:p-2 rounded-full text-charcoal hover:text-burgundy hover:bg-white transition-all duration-300 shadow-sm"
                   >
                     <Heart
-                      size={16}
-                      className={
-                        isInWishlist(product._id)
-                          ? "fill-burgundy text-burgundy"
-                          : ""
-                      }
+                      size={14}
+                      className={`md:w-4 md:h-4 ${isInWishlist(product._id) ? "fill-burgundy text-burgundy" : ""}`}
                     />
                   </button>
 
                   {product.isNewArrival && (
-                    <span className="absolute top-4 left-4 bg-white text-charcoal text-[9px] font-bold uppercase tracking-[0.15em] px-3 py-1.5 pointer-events-none">
+                    <span className="absolute top-2 left-2 md:top-4 md:left-4 bg-white text-charcoal text-[8px] md:text-[9px] font-bold uppercase tracking-[0.15em] px-2 py-1 md:px-3 md:py-1.5 pointer-events-none">
                       New
                     </span>
                   )}
                 </div>
 
-                <div className="text-center px-2">
-                  <p className="text-[10px] text-charcoal/40 uppercase tracking-[0.15em] mb-1">
+                <div className="text-center px-1">
+                  <p className="text-[9px] md:text-[10px] text-charcoal/40 uppercase tracking-[0.1em] md:tracking-[0.15em] mb-1 truncate">
                     {product.category}
                   </p>
-                  <h3 className="font-serif text-lg text-charcoal mb-2 group-hover:text-burgundy transition-colors truncate">
+                  <h3 className="font-serif text-sm md:text-lg text-charcoal mb-1 md:mb-2 group-hover:text-burgundy transition-colors truncate">
                     <Link to={`/product/${product._id}`}>{product.name}</Link>
                   </h3>
-                  <div className="flex items-center justify-center space-x-2 text-sm">
+                  <div className="flex items-center justify-center space-x-1 md:space-x-2 text-xs md:text-sm">
                     <span className="font-medium text-charcoal">
                       {formatPrice(product.sellingPrice)}
                     </span>
                     {product.originalPrice > product.sellingPrice && (
-                      <span className="text-charcoal/30 line-through text-xs">
+                      <span className="text-charcoal/30 line-through text-[10px] md:text-xs">
                         {formatPrice(product.originalPrice)}
                       </span>
                     )}

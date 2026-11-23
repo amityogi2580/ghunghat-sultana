@@ -29,16 +29,18 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? "bg-ivory/90 backdrop-blur-lg py-4 shadow-sm border-b border-charcoal/5" : "bg-transparent py-6"}`}
+        className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? "bg-ivory/95 backdrop-blur-lg py-3 shadow-sm border-b border-charcoal/5" : "bg-transparent py-4 md:py-6"}`}
       >
-        <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex items-center justify-between">
+          {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden text-charcoal z-50"
+            className="lg:hidden text-charcoal z-50 p-2 -ml-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
+          {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-10 text-[11px] tracking-[0.2em] uppercase font-medium">
             {navLinks.map((link) => (
               <Link
@@ -52,22 +54,23 @@ const Navbar = () => {
             ))}
           </div>
 
+          {/* Luxury Wordmark (Scaled for Mobile) */}
           <Link
             to="/"
-            className="text-2xl lg:text-3xl font-serif font-semibold text-burgundy tracking-wide z-50 text-center absolute left-1/2 -translate-x-1/2"
+            className="text-xl md:text-3xl font-serif font-semibold text-burgundy tracking-wide absolute left-1/2 -translate-x-1/2"
           >
             Ghunghat Fashion
           </Link>
 
-          <div className="flex items-center space-x-6 text-charcoal">
+          {/* Icons */}
+          <div className="flex items-center space-x-4 md:space-x-6 text-charcoal">
             <button className="hover:text-burgundy transition-colors hidden sm:block">
-              <Search size={20} strokeWidth={1.5} />
+              <Search size={18} strokeWidth={1.5} />
             </button>
 
-            {/* WISHLIST BUTTON */}
             <button
               onClick={() => setIsDrawerOpen(true)}
-              className="relative hover:text-burgundy transition-colors group"
+              className="relative hover:text-burgundy transition-colors group p-2 -mr-2"
             >
               <Heart
                 size={20}
@@ -75,7 +78,7 @@ const Navbar = () => {
                 className="group-hover:fill-burgundy transition-all"
               />
               {wishlist.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-burgundy text-ivory text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute top-0 right-0 bg-burgundy text-ivory text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {wishlist.length}
                 </span>
               )}
@@ -83,7 +86,7 @@ const Navbar = () => {
 
             <Link
               to="/admin/login"
-              className="text-[11px] tracking-[0.2em] uppercase hover:text-burgundy transition-colors hidden sm:block ml-2"
+              className="text-[11px] tracking-[0.2em] uppercase hover:text-burgundy transition-colors hidden md:block ml-2"
             >
               Admin
             </Link>
@@ -91,23 +94,30 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 bg-ivory z-40 flex flex-col items-center justify-center space-y-10 lg:hidden"
+            className="fixed inset-0 bg-ivory z-40 flex flex-col items-center justify-center space-y-8 lg:hidden"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-4xl font-serif text-charcoal hover:text-burgundy transition-colors"
+                className="text-3xl font-serif text-charcoal hover:text-burgundy transition-colors"
               >
                 {link.name}
               </Link>
             ))}
+            <Link
+              to="/admin/login"
+              className="text-xs tracking-[0.2em] uppercase text-charcoal/50 mt-4 border-b border-charcoal/20 pb-1"
+            >
+              Admin Portal
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

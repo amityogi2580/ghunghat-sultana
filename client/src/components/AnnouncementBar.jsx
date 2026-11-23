@@ -21,7 +21,7 @@ const AnnouncementBar = () => {
   }, []);
 
   return (
-    <div className="bg-burgundy text-ivory text-xs tracking-[0.2em] uppercase py-2 text-center font-medium">
+    <div className="bg-burgundy text-ivory text-[10px] md:text-xs tracking-[0.25em] uppercase py-3 text-center font-medium border-b border-white/10">
       {text}
     </div>
   );

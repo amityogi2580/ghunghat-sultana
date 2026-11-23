@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors */
-  --color-ivory: #F7F3ED;
-  --color-burgundy: #541F2A;
-  --color-gold: #B49A70;
-  --color-charcoal: #211C1A;
-  --color-beige: #E9DED1;
+  /* New Premium Luxury Palette */
+  --color-burgundy: #641C32;
+  --color-ivory: #FAF7F1;
+  --color-champagne: #D8C3A5;
+  --color-charcoal: #24201F;
+  --color-rose: #B98D8D;
+  --color-white: #FFFFFF;
 
   /* Typography */
-  --font-serif: "Cormorant Garamond", serif;
-  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "DM Sans", sans-serif;
 }
 
-/* Base styles for the body */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
   
   body {
-    @apply bg-ivory text-charcoal font-sans antialiased;
+    @apply bg-ivory text-charcoal font-sans antialiased selection:bg-champagne selection:text-charcoal;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -28,25 +28,8 @@
   }
 
   /* Custom Premium Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-ivory;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-charcoal/20 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-burgundy;
-  }
-}
-
-/* Hide scrollbar for category filters but keep functionality */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-ivory; }
+  ::-webkit-scrollbar-thumb { @apply bg-charcoal/20 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-burgundy; }
 }

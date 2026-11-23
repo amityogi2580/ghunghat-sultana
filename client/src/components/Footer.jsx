@@ -6,7 +6,6 @@ const Footer = () => {
     <footer className="bg-charcoal text-ivory pt-20 pb-10 border-t border-white/10">
       <div className="max-w-[1400px] mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
-          {/* Brand & Contact */}
           <div className="md:col-span-5">
             <Link
               to="/"
@@ -35,7 +34,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Links */}
           <div className="md:col-span-2 md:col-start-7">
             <h3 className="text-[11px] tracking-[0.2em] uppercase mb-6 text-ivory font-medium">
               Explore
@@ -78,41 +76,40 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter / Policies */}
           <div className="md:col-span-3 md:col-start-10">
             <h3 className="text-[11px] tracking-[0.2em] uppercase mb-6 text-ivory font-medium">
               Customer Care
             </h3>
             <ul className="space-y-4 text-xs text-ivory/60">
+              {/* Changed to Link tags */}
               <li>
-                <a
-                  href="/privacy"
+                <Link
+                  to="/privacy"
                   className="hover:text-champagne transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/shipping"
+                <Link
+                  to="/shipping"
                   className="hover:text-champagne transition-colors"
                 >
                   Shipping & Returns
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/terms"
+                <Link
+                  to="/terms"
                   className="hover:text-champagne transition-colors"
                 >
                   Terms of Service
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-[10px] tracking-widest text-ivory/40 uppercase">
           <p>
             &copy; {new Date().getFullYear()} Ghunghat Fashion. All rights

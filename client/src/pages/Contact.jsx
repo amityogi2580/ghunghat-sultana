@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Send, Camera } from "lucide-react"; // <-- Replaced Instagram with Camera
+import { Phone, Mail, MapPin, Send, Camera } from "lucide-react";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-ivory min-h-screen">
+    <div className="bg-ivory min-h-screen pt-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* Left Side: Contact Info (Dark Editorial) */}
         <motion.div
@@ -48,7 +48,7 @@ const Contact = () => {
                   <h3 className="text-xs uppercase tracking-widest text-ivory/50 mb-1">
                     Call Us
                   </h3>
-                  <p className="text-lg font-medium">+91 9782675316</p>
+                  <p className="text-lg font-medium">+91 97826 75316</p>
                 </div>
               </div>
 
@@ -82,7 +82,7 @@ const Contact = () => {
 
               <div className="flex items-center group cursor-pointer">
                 <div className="bg-white/5 border border-white/10 p-4 rounded-full text-gold mr-6 group-hover:bg-burgundy group-hover:border-burgundy transition-all duration-300">
-                  <Camera size={24} /> {/* <-- Using Camera icon here */}
+                  <Camera size={24} />
                 </div>
                 <div>
                   <h3 className="text-xs uppercase tracking-widest text-ivory/50 mb-1">
@@ -102,7 +102,7 @@ const Contact = () => {
           </div>
         </motion.div>
 
-        {/* Right Side: Form (Clean & Modern) */}
+        {/* Right Side: Form */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}

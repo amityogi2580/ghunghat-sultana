@@ -8,9 +8,9 @@ import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import PrivacyPolicy from "./pages/PrivacyPolicy"; // <-- New
-import ShippingReturns from "./pages/ShippingReturns"; // <-- New
-import TermsOfService from "./pages/TermsOfService"; // <-- New
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ShippingReturns from "./pages/ShippingReturns";
+import TermsOfService from "./pages/TermsOfService";
 
 // Admin Layouts & Pages
 import AdminLayout from "./layouts/AdminLayout";
@@ -40,7 +40,6 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* New Policy Routes */}
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/shipping" element={<ShippingReturns />} />
           <Route path="/terms" element={<TermsOfService />} />

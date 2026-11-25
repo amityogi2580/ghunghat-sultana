@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Instagram, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+import { Camera, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 import Logo from "./Logo";
 
 const Footer = () => {
@@ -72,7 +72,7 @@ const Footer = () => {
                   rel="noreferrer"
                   className="hover:text-champagne transition-colors flex items-center"
                 >
-                  <Instagram size={14} className="mr-2" /> Instagram
+                  <Camera size={14} className="mr-2" /> Instagram
                 </a>
               </li>
             </ul>

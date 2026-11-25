@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
-import { Instagram } from "lucide-react";
+import { Camera } from "lucide-react"; // <-- Changed Instagram to Camera
 
 const InstagramGallery = () => {
-  // Using high-quality fashion placeholder images for now.
-  // In the future, you could connect this to a real Instagram API or let the Admin upload these.
   const images = [
     "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=600&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
@@ -37,11 +35,11 @@ const InstagramGallery = () => {
             rel="noreferrer"
             className="text-charcoal/50 text-xs md:text-sm hover:text-burgundy transition-colors uppercase tracking-[0.15em] flex items-center"
           >
-            <Instagram size={16} className="mr-2" /> View on Instagram
+            <Camera size={16} className="mr-2" /> View on Instagram{" "}
+            {/* <-- Changed icon here too */}
           </a>
         </motion.div>
 
-        {/* 2-column grid on mobile, 3-column on desktop */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
           {images.map((img, index) => (
             <motion.a
@@ -61,12 +59,12 @@ const InstagramGallery = () => {
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
-              {/* Hover Overlay */}
               <div className="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <Instagram
+                <Camera
                   size={32}
                   className="text-ivory transform scale-50 group-hover:scale-100 transition-transform duration-300"
-                />
+                />{" "}
+                {/* <-- Changed icon here */}
               </div>
             </motion.a>
           ))}

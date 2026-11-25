@@ -3,12 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import { Search, Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWishlist } from "../context/WishlistContext";
-import SearchOverlay from "./SearchOverlay"; // <-- Import Overlay
+import SearchOverlay from "./SearchOverlay";
+import Logo from "./Logo"; // <-- Import Logo
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // <-- New State
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const { wishlist, setIsDrawerOpen } = useWishlist();
 
@@ -31,7 +32,7 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? "bg-ivory/95 backdrop-blur-lg py-3 shadow-sm border-b border-charcoal/5" : "bg-transparent py-4 md:py-6"}`}
+        className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? "bg-ivory/95 backdrop-blur-lg py-2 shadow-sm border-b border-charcoal/5" : "bg-transparent py-3 md:py-4"}`}
       >
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex items-center justify-between">
           <button
@@ -54,15 +55,12 @@ const Navbar = () => {
             ))}
           </div>
 
-          <Link
-            to="/"
-            className="text-xl md:text-3xl font-serif font-semibold text-burgundy tracking-wide absolute left-1/2 -translate-x-1/2"
-          >
-            Ghunghat Fashion
+          {/* NEW LOGO COMPONENT */}
+          <Link to="/" className="absolute left-1/2 -translate-x-1/2 z-50">
+            <Logo />
           </Link>
 
           <div className="flex items-center space-x-4 md:space-x-6 text-charcoal">
-            {/* SEARCH BUTTON TRIGGER */}
             <button
               onClick={() => setIsSearchOpen(true)}
               className="hover:text-burgundy transition-colors hidden sm:block"
@@ -123,7 +121,6 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* RENDER SEARCH OVERLAY */}
       <SearchOverlay
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

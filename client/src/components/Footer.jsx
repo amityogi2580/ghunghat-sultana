@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
-import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Instagram, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
     <footer className="bg-charcoal text-ivory pt-20 pb-10 border-t border-white/10">
       <div className="max-w-[1400px] mx-auto px-6">
+        {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
-          <div className="md:col-span-5">
-            <Link
-              to="/"
-              className="text-4xl md:text-5xl font-serif text-champagne mb-6 block tracking-wide"
-            >
-              Ghunghat Fashion
+          {/* Brand & Contact */}
+          <div className="md:col-span-4">
+            <Link to="/" className="inline-block mb-6">
+              <Logo light={true} />
             </Link>
+
             <p className="text-ivory/50 text-sm max-w-sm leading-relaxed mb-8 font-light">
               Curating premium Indian fashion and heritage designs for the
               modern muse. Crafted with love, delivered worldwide.
@@ -34,7 +35,8 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="md:col-span-2 md:col-start-7">
+          {/* Explore Links */}
+          <div className="md:col-span-2 md:col-start-6">
             <h3 className="text-[11px] tracking-[0.2em] uppercase mb-6 text-ivory font-medium">
               Explore
             </h3>
@@ -76,12 +78,12 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="md:col-span-3 md:col-start-10">
+          {/* Customer Care */}
+          <div className="md:col-span-2">
             <h3 className="text-[11px] tracking-[0.2em] uppercase mb-6 text-ivory font-medium">
               Customer Care
             </h3>
             <ul className="space-y-4 text-xs text-ivory/60">
-              {/* Changed to Link tags */}
               <li>
                 <Link
                   to="/privacy"
@@ -108,8 +110,33 @@ const Footer = () => {
               </li>
             </ul>
           </div>
+
+          {/* Newsletter Signup (Premium Touch) */}
+          <div className="md:col-span-3">
+            <h3 className="text-[11px] tracking-[0.2em] uppercase mb-6 text-ivory font-medium">
+              Become an Insider
+            </h3>
+            <p className="text-ivory/50 text-xs leading-relaxed mb-4 font-light">
+              Subscribe to receive updates on new collections, exclusive offers,
+              and private events.
+            </p>
+            <form className="relative flex items-center border-b border-white/20 pb-2 group focus-within:border-champagne transition-colors">
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="w-full bg-transparent text-xs text-ivory placeholder-ivory/30 focus:outline-none"
+              />
+              <button
+                type="button"
+                className="text-ivory hover:text-champagne transition-colors ml-2"
+              >
+                <ArrowRight size={16} />
+              </button>
+            </form>
+          </div>
         </div>
 
+        {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-[10px] tracking-widest text-ivory/40 uppercase">
           <p>
             &copy; {new Date().getFullYear()} Ghunghat Fashion. All rights

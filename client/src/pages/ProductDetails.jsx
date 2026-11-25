@@ -10,6 +10,7 @@ import {
   Truck,
   Heart,
 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import api from "../services/api";
 import { useWishlist } from "../context/WishlistContext";
 
@@ -32,7 +33,6 @@ const ProductDetails = () => {
         ]);
         setProduct(prodRes.data.data);
         setSettings(setRes.data.data);
-        document.title = `${prodRes.data.data.name} | Ghunghat Fashion`;
       } catch (err) {
         setError("Product not found");
       } finally {
@@ -40,9 +40,6 @@ const ProductDetails = () => {
       }
     };
     fetchData();
-    return () => {
-      document.title = "Ghunghat Fashion | Premium Indian Couture";
-    };
   }, [id]);
 
   const formatPrice = (price) => {
@@ -58,7 +55,6 @@ const ProductDetails = () => {
       .post("/enquiries", { productId: product._id, productName: product.name })
       .catch(console.error);
 
-    // Added Product ID to the message as requested
     const message = encodeURIComponent(
       `Hello Ghunghat Fashion,\n\nI am interested in the following design:\n\n*Product Name:* ${product.name}\n*Product ID:* ${product._id.slice(-6).toUpperCase()}\n*Price:* ${formatPrice(product.sellingPrice)}\n*Link:* ${window.location.href}\n\nCould you please provide more details?`,
     );
@@ -67,15 +63,17 @@ const ProductDetails = () => {
     window.open(`https://wa.me/${cleanNumber}?text=${message}`, "_blank");
   };
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center pt-20">
+      <div className="h-screen flex items-center justify-center pt-20 bg-ivory">
         <Loader className="animate-spin text-burgundy" size={40} />
       </div>
     );
-  if (error || !product)
+  }
+
+  if (error || !product) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center pt-20">
+      <div className="h-screen flex flex-col items-center justify-center pt-20 bg-ivory">
         <h1 className="text-3xl font-serif text-burgundy mb-4">
           Product Not Found
         </h1>
@@ -87,9 +85,49 @@ const ProductDetails = () => {
         </Link>
       </div>
     );
+  }
+
+  // Generate JSON-LD for Google Rich Results
+  const jsonLd = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    name: product.name,
+    image: product.coverImage,
+    description: product.description.substring(0, 160),
+    brand: {
+      "@type": "Brand",
+      name: "Ghunghat Fashion Sultana",
+    },
+    offers: {
+      "@type": "Offer",
+      url: `https://ghunghat-sultana.vercel.app/product/${product._id}`,
+      priceCurrency: "INR",
+      price: product.sellingPrice,
+      availability: "https://schema.org/InStock",
+    },
+  };
 
   return (
     <div className="bg-ivory min-h-screen pt-20 md:pt-24 pb-24 lg:pb-12">
+      {/* SEO Meta Tags */}
+      <Helmet>
+        <title>{product.name} | Ghunghat Fashion Sultana</title>
+        <meta
+          name="description"
+          content={product.description.substring(0, 160)}
+        />
+        <meta
+          property="og:title"
+          content={`${product.name} | Ghunghat Fashion`}
+        />
+        <meta
+          property="og:description"
+          content={product.description.substring(0, 160)}
+        />
+        <meta property="og:image" content={product.coverImage} />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
+
       <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <div className="mb-4 md:mb-8">
           <Link
@@ -116,7 +154,7 @@ const ProductDetails = () => {
                 >
                   <img
                     src={img}
-                    alt="Thumb"
+                    alt={`${product.name} thumbnail ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
                 </button>
@@ -177,7 +215,7 @@ const ProductDetails = () => {
             <div className="flex space-x-3 md:space-x-4 mb-8 md:mb-10">
               <button
                 onClick={handleWhatsAppEnquiry}
-                className="flex-1 bg-charcoal text-ivory py-3.5 md:py-4 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-burgundy transition-colors duration-300 flex items-center justify-center"
+                className="flex-1 bg-charcoal text-ivory py-3.5 md:py-4 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-burgundy transition-colors duration-300 flex items-center justify-center shadow-lg"
               >
                 <MessageCircle size={14} className="mr-2 md:w-4 md:h-4" />{" "}
                 Enquire on WhatsApp

@@ -5,7 +5,6 @@ const Logo = ({ light = false }) => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* Arch Icon */}
       <svg
         width="32"
         height="32"
@@ -40,7 +39,6 @@ const Logo = ({ light = false }) => {
         </text>
       </svg>
 
-      {/* Typography */}
       <div className="flex flex-col items-center leading-none">
         <span
           className={`font-serif font-semibold tracking-wider text-lg md:text-xl ${primaryColor}`}
